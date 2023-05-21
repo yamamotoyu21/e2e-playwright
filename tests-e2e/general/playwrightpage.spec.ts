@@ -12,7 +12,8 @@ test.describe("navigation", () => {
 
   test("404 error check", async ({ page }) => {
     const status = await checkHTTPStatus(page);
-    expect(status).not.toBe(404);
+    expect(status).toBe(200 || 201);
+    console.log('ステータス番号:' + status)
   })
 
   test("503 error check", async ({ page }) => {
@@ -25,6 +26,8 @@ test.describe("navigation", () => {
     expect(page.url()).toContain('/intro');
   })
 
+  test
+
   // test("opens github page in a new tab", async ({ page }) => {
   //   await page.getByRole('link', { name: 'Star microsoft/playwright on GitHub' }).click();
   //   const newTabUrl = await page.evaluate(() => window.location.href);
@@ -36,6 +39,8 @@ test.describe("navigation", () => {
   //   await page.getByPlaceholder('Search docs').press('Enter');
   //   expect(page.url()).toContain('/class-framelocator#frame-locator-get-by-role');
   // })
+
+
 
 })
  
