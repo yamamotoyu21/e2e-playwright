@@ -25,12 +25,18 @@ test.describe("navigation", () => {
     expect(page.url()).toContain('/intro');
   })
 
-  // test("navigation to github", async ({ page }) => {
-  //   await page.getByRole('button', {name: 'Star'}).click();
-  //   expect(page.url()).toContain('/github.com/microsoft/playwright')
+  // test("opens github page in a new tab", async ({ page }) => {
+  //   await page.getByRole('link', { name: 'Star microsoft/playwright on GitHub' }).click();
+  //   const newTabUrl = await page.evaluate(() => window.location.href);
+  //   expect(newTabUrl).toContain('/github.com/microsoft/playwright')
   // })
 
-  
+  // test("Check if document search is available",async({ page }) => {
+  //   await page.getByPlaceholder('Search docs').fill('getByRole');
+  //   await page.getByPlaceholder('Search docs').press('Enter');
+  //   expect(page.url()).toContain('/class-framelocator#frame-locator-get-by-role');
+  // })
+
 })
  
   
