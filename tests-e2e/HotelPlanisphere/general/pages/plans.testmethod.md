@@ -1,0 +1,38 @@
+- 目的
+    - テスト練習
+        - エレメント操作
+        - WindowHandling
+        - DatePicker
+        - ficture
+        - Page Object Model
+        - スクショ, 録画
+- 対象
+    - hotel.testplanisphere
+    - 'https://hotel.testplanisphere.dev/ja/plans.html'
+- テストケース
+    - 宿泊プラン一覧
+        - URL
+        - h1テキスト
+        - 各プランのボタンが存在し、enabledになっている
+        - ページ遷移
+            - 宿泊予約
+             - そのまま
+            - 会員登録
+             - /signup.html
+            - ログイン
+             - /login.html
+            - このプランで予約
+             - /reserve.html?plan-id=0
+        - モバイル
+            - ハンバーガーメニュー
+                - ホーム
+                - 宿泊予約
+                - ログイン
+- ページオブジェクト
+    - ボタン
+        - ホーム
+        - 宿泊予約
+        - 会員登録
+        - ログイン
+        - モバイルnav var
+    - このプランで予約
