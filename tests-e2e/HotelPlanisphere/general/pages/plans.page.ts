@@ -3,16 +3,16 @@ import { Locator, Page } from "@playwright/test";
 export class PlanPage {
     readonly page: Page;
     readonly planNum: number;
-    readonly researvationLink: Locator;
-    readonly signUpLink: Locator;
-    readonly signInLink: Locator;
+    readonly researvationButton: Locator;
+    readonly signUpButton: Locator;
+    readonly signInButton: Locator;
     readonly navBarToggler: Locator;
 
     constructor(page: Page){
         this.page = page;
-        this.researvationLink = page.locator('a.nav-link', {hasText: '宿泊予約'});
-        this.signUpLink = page.locator('a.nav-link', {hasText: '会員登録'});
-        this.signInLink = page.locator('a.nav-link', {hasText: 'ログイン'});
+        this.researvationButton = page.getByText('宿泊予約')
+        this.signUpButton = page.locator('#signup-holder');
+        this.signInButton = page.locator('#login-holder')
         this.navBarToggler = page.locator('button.navbar-togger')
     }
 
@@ -24,6 +24,8 @@ export class PlanPage {
         const planLink = this.page.locator(`a[href="./reserve.html?plan-id=${planNum}"]`);
         await planLink.click();
     }
+
+    
   
 }
 
