@@ -13,7 +13,7 @@ export class PlanPage {
         this.researvationButton = page.getByText('宿泊予約')
         this.signUpButton = page.locator('#signup-holder');
         this.signInButton = page.locator('#login-holder')
-        this.navBarToggler = page.locator('button.navbar-togger')
+        this.navBarToggler = page.locator('button[aria-controls="navbarNav"]')
     }
 
     async visit(){
@@ -24,8 +24,6 @@ export class PlanPage {
         const planLink = this.page.locator(`a[href="./reserve.html?plan-id=${planNum}"]`);
         await planLink.click();
     }
-
-    
   
 }
 
