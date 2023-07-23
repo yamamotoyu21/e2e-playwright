@@ -1,0 +1,25 @@
+{
+    "happyPath": [
+      {
+        "email": "moonwalker1121@gmail.com",
+        "password": "password",
+        "verificationPW": "password",
+        "name": "name",
+        "address": "MichaelStreet11",
+        "phone": "012345678912",
+        "gender":  "male",
+      }
+    ],
+    "unhappyPath": [
+      {
+        "email": "moonwalker1121gmail.com",
+        "password": "password",
+        "verificationPW": "password",
+        "name": "name",
+        "address": "MichaelStreet11",
+        "phone": "012345678912",
+        "gender": "noanswer"
+      }
+    ]
+  }
+  

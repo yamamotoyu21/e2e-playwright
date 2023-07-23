@@ -11,7 +11,7 @@ export class PlanPage {
     constructor(page: Page){
         this.page = page;
         this.researvationButton = page.getByText('宿泊予約')
-        this.signUpButton = page.locator('#signup-holder');
+        this.signUpButton = page.locator('#signup-holder')
         this.signInButton = page.locator('#login-holder')
         this.navBarToggler = page.locator('button[aria-controls="navbarNav"]')
     }
