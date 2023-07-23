@@ -14,6 +14,9 @@ export class myPage {
     await this.page.goto("https://hotel.testplanisphere.dev/ja/signup.html");
   }
 
+  /**
+   * assert the navigated URL is correct
+   */
   async assertURL():Promise<void>{
     const myPageURL = "https://hotel.testplanisphere.dev/ja/mypage.html";
     await this.page.waitForURL(myPageURL);
@@ -21,6 +24,9 @@ export class myPage {
     await expect(currentURL).toBe(myPageURL);
 }
 
+/**
+ * Assert the registered info is shown
+ */
 async assertRegsteredInfo(signUpInfo: object, nonDisplayKeys: Map):Promise<void>{
     for (const key in signUpInfo) {
         if (!nonDisplayKeys.has(key)) {
