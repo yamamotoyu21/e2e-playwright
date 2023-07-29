@@ -31,7 +31,7 @@ test.describe("Sign Up", () => {
     //Check if the navigated URL is correct
     await mypage.assertURL()
     
-    //Check if registered info is displayed
+    //Check if registered info is displayed except for those 'nonDisplayKeys'
     const nonDisplayKeys = new Set(["password", "rank", "gender", "dateOfBirth"]);
     await mypage.assertRegsteredInfo(testData, nonDisplayKeys)
   });

@@ -7,7 +7,7 @@
         "name": "name",
         "address": "MichaelStreet11",
         "phone": "012345678912",
-        "gender":  "male",
+        "gender":  "male"
       }
     ],
     "unhappyPath": [

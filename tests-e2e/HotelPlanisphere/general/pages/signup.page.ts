@@ -22,6 +22,14 @@ export class SignUpPage{
     async visit(){
         await this.page.goto('https://hotel.testplanisphere.dev/ja/signup.html');
     }
+
+    /**
+     * This function is for checking if signup feature works
+     * 
+     * @param signUpInfo 
+     * @returns myPage
+     * 
+     */
     async signUp(signUpInfo: SignUpInfo): Promise<myPage> {
         const { email, password, name, rank, address, phone, gender, dateOfBirth} = signUpInfo;
 

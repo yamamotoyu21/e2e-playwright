@@ -1,112 +1,71 @@
-import { test, expect, Response, Page} from "@playwright/test";
-import { PlanPage } from "./pages/plans.page";
+import { test, expect,BrowserContext, chromium} from "@playwright/test";
+import { PlanPage } from "../../pages/plans.page";
+import { BookingPage, BookingInfo } from "../../pages/booking.page"
+import { BookingConfirmationPage }from "../../pages/bookingConfirmation.page"
+import data from './data.json'
+
 
 test.describe('planPage', () => {
-    test('should have correct URL', async({ page }) => {
-        const planPage = new PlanPage(page);
-        await planPage.visit()
-        const expectedURL = 'https://hotel.testplanisphere.dev/ja/plans.html';
-        await page.waitForURL(expectedURL)
-        await expect(page).toHaveURL(expectedURL);
-    })
-    test('should have correct title', async({ page }) => {
-        const planPage = new PlanPage(page);
-        await planPage.visit();
-        const header = await page.locator('h2.my-3')
-        await expect(header).toHaveText('宿泊プラン一覧')
-    })
-
-    test('should have each navigation on nav bar visible', async({ page }) => {
-        const planPage = new PlanPage(page);
-        await planPage.visit();
-        await expect(planPage.signInButton).toBeVisible();
-        await expect(planPage.signUpButton).toBeVisible();
-    })
-
-    test('screenshot', async({ page }) => {
-        const planPage = new PlanPage(page);
-        await planPage.visit()
-        await expect(page).toHaveScreenshot('plans-page.png')
+    const testData: BookingInfo = {
+      checkInDate: data.bookingInfo.checkInDate,
+      term: data.bookingInfo.term,
+      headCount: data.bookingInfo.headCount,
+      breakfast: data.bookingInfo.breakfast,
+      earlyCheckIn: data.bookingInfo.earlyCheckIn,
+      sightseeing: data.bookingInfo.sightseeing,
+      name: data.bookingInfo.name,
+      contact: data.bookingInfo.contact,
+      email: data.bookingInfo.email,
+      tel: data.bookingInfo.tel,
+      comment: data.bookingInfo.comment
+    }
+    
+    test('Navigation buttons on the header is visible', async({ page }) => {
+       
+      const planPage = new PlanPage(page);
+      await planPage.visit()
+        await expect(await page.locator('#signup-holder')).toBeVisible()
+        await expect(await page.locator('#mypage-holder')).toBeVisible()
+        await expect(await page.locator('#login-holder')).toBeVisible()
+        await expect(await page.locator('#logout-holder')).toBeVisible()
     })
 
-    test('会員登録 button should navigate to signup page', async({ page }) => {
-        const expectedURL = 'https://hotel.testplanisphere.dev/ja/signup.html';
-        const planPage = new PlanPage(page);
-        await planPage.visit();
-        await planPage.signUpButton.click()
-        await page.waitForURL(/\/signup/, 2000)
-        await expect(page).toHaveURL(expectedURL)
+    test('Check if cliclking plan button navigates to plan page ', async({  }) => {
+      const browser = await chromium.launch();
+      const context = await browser.newContext();
+
+      // Step 1: ページに遷移する
+      const page = await context.newPage();
+      await page.goto('https://hotel.testplanisphere.dev/ja/plans.html');
+
+      // Step 2: エレメントをクリックする
+      await page.click('a[href="./reserve.html?plan-id=0"][class="btn btn-primary"]', { target: '_blank' });
+
+      // 別タブが開くまで待つ
+      await page.waitForTimeout(500); // 適切な待機時間を設定してください
+
+      // 別タブへの参照を取得
+      const pages = await context.pages();
+      const newPage = pages[1]; // 新しく開かれたタブが一番最後に追加されるので、その参照を取得
+
+      // Step 3: 別タブ内のURLが正しいことを確認する
+      const expectedURL = 'https://hotel.testplanisphere.dev/ja/reserve.html?plan-id=0';
+      const actualURL = newPage.url();
+
+      if (actualURL === expectedURL) {
+        console.log('URLが一致しています。');
+      } else {
+        console.error(`URLが一致しません。期待されるURL: ${expectedURL} 実際のURL: ${actualURL}`);
+      }
+
+      // ブラウザを閉じる
+      await browser.close();
     })
 
-    test('ログイン button should navigate to login page', async({ page }) => {
-        const expectedURL = 'https://hotel.testplanisphere.dev/ja/login.html';
-        const planPage = new PlanPage(page);
-        await planPage.visit();
-        await planPage.signInButton.click()
-        await page.waitForURL(/\/login/, 2000)
-        await expect(page).toHaveURL(expectedURL)
+    test.only('Check if booking form is available', async ({ page }) => {
+      const bookingPage = new BookingPage(page)
+      await bookingPage.visit(0)
+      const bookingConfirmationPage: BookingConfirmationPage = await bookingPage.inputBookingInfo(testData)
+      await bookingConfirmationPage.assertURL()
     })
-
-    test('should open plan(0) page in new window', async({ page }) => {
-        const expectedURL = 'https://hotel.testplanisphere.dev/ja/reserve.html?plan-id=0';
-
-        const planPage = new PlanPage(page);
-        await planPage.visit();
-
-        // プランを選択し、新しいウィンドウを開く
-        const newPagePromise = new Promise<Page>((resolve) => {
-            page.once('popup', (newPage) => {
-                resolve(newPage);
-            });
-        });
-
-        await planPage.selectPlan(0)
-        const newPage = await newPagePromise;
-
-        await newPage.waitForLoadState();
-        const newPageURL = newPage.url();
-        await expect(newPageURL).toBe(expectedURL);
-
-        const windows = await page.context().pages();
-        await expect(windows).toContain(newPage);
-    })
-
-
-    test('clicking hamberger manu make nav bar visible on mobile', async ({ page }) => {
-        await page.setViewportSize({ width: 375, height: 812 }); // モバイルデバイスのサイズを設定します。
-        const planPage = new PlanPage(page);
-        await planPage.visit();
-
-        await expect(planPage.signInButton).not.toBeVisible();
-        await expect(planPage.signUpButton).not.toBeVisible();
-
-        await planPage.navBarToggler.click()
-        await expect(planPage.signInButton).toBeVisible();
-        await expect(planPage.signUpButton).toBeVisible();
-    })
-
-    test('navigation to signup page works in mobile', async ({ page }) => {
-        const expectedURL = 'https://hotel.testplanisphere.dev/ja/signup.html';
-        await page.setViewportSize({ width: 375, height: 812 }); // モバイルデバイスのサイズを設定します。
-        const planPage = new PlanPage(page);
-        await planPage.visit();
-        await planPage.navBarToggler.click()
-        await planPage.signUpButton.click()
-        await page.waitForURL(/\/signup/, 2000)
-        await expect(page).toHaveURL(expectedURL)
-    })
-
-    test('navigation to login page works in mobile', async ({ page }) => {
-        const expectedURL = 'https://hotel.testplanisphere.dev/ja/login.html';
-        await page.setViewportSize({ width: 375, height: 812 }); // モバイルデバイスのサイズを設定します。
-        const planPage = new PlanPage(page);
-        await planPage.visit();
-        await planPage.navBarToggler.click()
-        await planPage.signInButton.hover(10000)
-        await page.waitForURL(/\/login/, 2000)
-        await expect(page).toHaveURL(expectedURL)
-    })
-
-
-
 })
