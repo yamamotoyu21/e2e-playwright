@@ -1,9 +1,7 @@
 import { Locator, Page, expect } from "@playwright/test";
 
 export class myPage {
-  static url(): any {
-    throw new Error("Method not implemented.");
-  }
+
   readonly page: Page;
 
   constructor(page: Page) {
