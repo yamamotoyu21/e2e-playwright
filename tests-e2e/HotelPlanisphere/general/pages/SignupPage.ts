@@ -1,5 +1,6 @@
 import { Locator, Page, expect, BrowserContext } from "@playwright/test";
 import  { myPage }  from "../pages/mypage.page";
+import basicPage from "./BasicPage";
 
 interface SignUpInfo{
     email:string;
@@ -12,15 +13,12 @@ interface SignUpInfo{
     gender: number;
     dateOfBirth: string;
 }
-export class SignUpPage{
-    readonly page: Page;
-
-    constructor(page: Page){
-        this.page = page;
-    }
-
-    async visit(){
-        await this.page.goto('https://hotel.testplanisphere.dev/ja/signup.html');
+export class SignUpPage extends basicPage{
+    /**
+     * visit signup page directory
+     */
+    async visit(): Promise<void>{   
+     await this.page.goto(`${this.origin}/signup.html`)
     }
 
     /**
@@ -68,6 +66,6 @@ export class SignUpPage{
 
         await this.page.waitForLoadState()
 
-        return new myPage(this.page)
+        return new myPage(this.page, this.origin)
     }
     }

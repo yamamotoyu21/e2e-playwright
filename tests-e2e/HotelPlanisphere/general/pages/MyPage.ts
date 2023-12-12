@@ -1,12 +1,10 @@
 import { Locator, Page, expect } from "@playwright/test";
+import basicPage from "./BasicPage";
 
-export class myPage {
-
+export class myPage extends basicPage {
   readonly page: Page;
 
-  constructor(page: Page) {
-    this.page = page;
-  }
+
 
   async visit() {
     await this.page.goto("https://hotel.testplanisphere.dev/ja/signup.html");
