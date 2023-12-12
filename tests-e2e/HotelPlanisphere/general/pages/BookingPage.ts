@@ -1,6 +1,7 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { PlanPage } from "./plans.page";
-import { BookingConfirmationPage } from '../pages/bookingConfirmation.page'
+import basicPage from "./BasicPage";
+import { PlanPage } from "./PlansPage";
+import { BookingConfirmationPage } from './BookingConfirmationPage'
 
 
 interface BookingInfo {
@@ -18,15 +19,9 @@ interface BookingInfo {
 }
 
 
-export class BookingPage {
-    page: Page;
-    planNum: number;
-
-    constructor(page: Page){
-        this.page = page;
-    }
-
-    
+export class BookingPage extends basicPage{
+ 
+    planNum: number;  
     /**
      * Directory go to a booking page specifying a plan id
      * @param planNum 
@@ -35,7 +30,7 @@ export class BookingPage {
     async visit(planNum: number): Promise <BookingPage>{
         this.planNum = planNum;
         await this.page.goto(`https://hotel.testplanisphere.dev/ja/reserve.html?plan-id=${this.planNum}`)
-        return new BookingPage(this.page)
+        return new BookingPage(this.page, this.origin)
     }
     /**
      * Check if the URL is correct
@@ -90,7 +85,7 @@ export class BookingPage {
       //サブミット
       await this.page.locator('[data-test="submit-button"]').click();
 
-      return new BookingConfirmationPage(this.page)
+      return new BookingConfirmationPage(this.page, this.origin)
  
    }
 }
