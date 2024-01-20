@@ -1,5 +1,5 @@
 import { Locator, Page, expect, BrowserContext } from "@playwright/test";
-import { MyPage } from "./myPage";
+import { MyPage } from "./MyPage";
 import BasicPage from "./BasicPage";
 
 export interface SignUpInfo {
