@@ -1,0 +1,21 @@
+# CircleCI configuration file
+
+version: 2.1
+
+jobs:
+  run_test: 
+    docker:
+    # Primary container image where all steps run
+     - image: cimg/node:lts
+    steps:
+      #- run: command -v npx || sudo npm install -g npx
+      - checkout
+      - run: sudo npm install -D @playwright/test
+      - run: cd tests-e2e/      
+      - run: npx playwright test
+
+workflows:
+  version: 2
+  test_workflow:
+    jobs:
+      - run_test
