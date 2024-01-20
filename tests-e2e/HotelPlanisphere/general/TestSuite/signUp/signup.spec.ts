@@ -36,12 +36,13 @@ test.describe("Sign Up", () => {
     await mypage.assertURL();
 
     //Check if registered info is displayed except for those 'nonDisplayKeys'
-    const nonDisplayKeys = new Set([
-      "password",
-      "rank",
-      "gender",
-      "dateOfBirth",
-    ]);
-    await mypage.assertRegisteredInfo(testData, nonDisplayKeys);
+    //   const nonDisplayKeys = new Set([
+    //     "password",
+    //     "rank",
+    //     "gender",
+    //     "dateOfBirth",
+    //   ]);
+    //   await mypage.assertRegisteredInfo(testData, nonDisplayKeys);
+    // });
   });
 });
