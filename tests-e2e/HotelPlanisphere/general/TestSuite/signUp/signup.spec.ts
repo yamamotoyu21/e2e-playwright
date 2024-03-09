@@ -7,42 +7,38 @@ import defineConfig from "../../../../../playwright.config";
 const origin = defineConfig.use.baseURL;
 
 test.describe("Sign Up", () => {
-  let signUpPage: SignUpPage;
+  test.only("signUp", async ({ page }) => {
+    const d = data.newUser;
 
-  test.only("signUp", async ({ browser, page }) => {
     const testData: SignUpInfo = {
-      email: data.newUser.email,
-      password: data.newUser.password,
-      confirmPW: data.newUser.password,
-      name: data.newUser.name,
-      rank: data.newUser.rank,
-      address: data.newUser.address,
-      phone: data.newUser.phone,
-      gender: data.newUser.gender,
-      dateOfBirth: data.newUser.dateOfBirth,
+      email: d.email,
+      password: d.password,
+      confirmPW: d.password,
+      name: d.name,
+      rank: d.rank,
+      address: d.address,
+      phone: d.phone,
+      gender: d.gender,
+      dateOfBirth: d.dateOfBirth,
     };
 
-    //instantiate SignUpPage
-    signUpPage = new SignUpPage(page, origin);
-
-    //visit signUpPage
+    //visit SignUpPage
+    const signUpPage = new SignUpPage(page, origin);
     await signUpPage.visit();
+    await page.waitForLoadState();
 
-    //Sign up and see if it returns myPage object
-    const mypage: MyPage = await signUpPage.signUp(testData);
-    await expect(mypage).toBeDefined();
-
-    //Check if the navigated URL is correct
-    await mypage.assertURL();
-
+    //Sign up and see if it navigates to myPage
+    await signUpPage.signUp(testData);
+    const myPage = new MyPage(page, origin);
+    // const mypage: MyPage = await signUpPage.signUp(testData);
+    await myPage.assertURL();
     //Check if registered info is displayed except for those 'nonDisplayKeys'
-    //   const nonDisplayKeys = new Set([
-    //     "password",
-    //     "rank",
-    //     "gender",
-    //     "dateOfBirth",
-    //   ]);
-    //   await mypage.assertRegisteredInfo(testData, nonDisplayKeys);
-    // });
+    const nonDisplayKeys = new Set([
+      "password",
+      "rank",
+      "gender",
+      "dateOfBirth",
+    ]);
+    await myPage.assertRegisteredInfo(testData, nonDisplayKeys);
   });
 });
