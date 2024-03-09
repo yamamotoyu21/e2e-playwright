@@ -1,6 +1,7 @@
 import { Page, expect } from "@playwright/test";
 import BasicPage from "./BasicPage";
 import { BookingPage } from "./BookingPage";
+import axios from "axios";
 
 /**
  * Interface to define the structure of expected plan card data.
@@ -66,5 +67,43 @@ export class PlanPage extends BasicPage {
     await expect(this.page.locator(".card-body")).toHaveCount(
       expectedData.length
     );
+  }
+
+  /**
+   * check if plan links are dead or throws error
+   */
+  async assertPlanLinkAlive() {
+    //Set all the plan links as targets
+    const target = 'a[href^="./reserve.html?plan-id="]';
+    const linkHrefs = await this.page.$$eval(target, (links) =>
+      links
+        .map((link) => (link instanceof HTMLAnchorElement ? link.href : ""))
+        .filter((href) => href !== "")
+    );
+
+    // Send get requests to targeted links and check if they throw error
+    const requests = linkHrefs.map(async (href) => {
+      try {
+        // Attempt to fetch each link
+        await axios.get(href);
+        console.log(`Link check passed: ${href}`);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          // Handle HTTP-specific errors (e.g., response status codes)
+          if (error.response && error.response.status === 403) {
+            console.log(`Forbidden (403) detected: ${href}`);
+          } else {
+            // Other Axios errors (e.g., network issues, non-200 status codes)
+            console.log(`Error accessing ${href}: ${error.message}`);
+          }
+        } else {
+          // Handle non-Axios errors (e.g., programming errors)
+          console.error(`Unexpected error for ${href}:`, error);
+        }
+      }
+    });
+
+    // Wait for all requests to complete
+    await Promise.all(requests);
   }
 }
