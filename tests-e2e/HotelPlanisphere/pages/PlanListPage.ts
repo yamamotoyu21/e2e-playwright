@@ -70,7 +70,7 @@ export class PlanPage extends BasicPage {
   }
 
   /**
-   * check if plan links are dead or throws error
+   * check if plan links are dead or throw error
    */
   async assertPlanLinkAlive() {
     //Set all the plan links as targets

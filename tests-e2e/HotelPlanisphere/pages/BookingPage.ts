@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
 import BasicPage from "./BasicPage";
-import { PlanPage } from "./PlansPage";
+import { PlanPage } from "./PlanListPage";
 import { BookingConfirmationPage } from "./BookingConfirmationPage";
 
 export interface BookingInfo {

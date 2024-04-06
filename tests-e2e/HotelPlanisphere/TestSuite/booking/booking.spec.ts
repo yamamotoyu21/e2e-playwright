@@ -3,7 +3,7 @@ import { PlanPage } from "../../pages/PlansPage";
 import { BookingPage, BookingInfo } from "../../pages/BookingPage";
 import { BookingConfirmationPage } from "../../pages/BookingConfirmationPage";
 import data from "./data.json";
-import defineConfig from "../../../../HotelPlanisphere/../../playwright.config";
+import defineConfig from "../../../../../playwright.config";
 
 const origin = defineConfig.use.baseURL;
 
