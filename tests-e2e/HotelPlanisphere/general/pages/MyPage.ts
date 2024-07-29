@@ -2,25 +2,23 @@ import { Page, expect } from "@playwright/test";
 import BasicPage from "./BasicPage";
 
 export class MyPage extends BasicPage {
+  url = `${this.origin}/${this.lang}/mypage.html`;
+
+  async getURL(): Promise<string> {
+    return this.url;
+  }
+
+  /**
+   * Directly visit May
+   */
   async visit() {
-    await this.page.goto("https://hotel.testplanisphere.dev/ja/signup.html");
+    await this.page.goto(`${this.origin}/${this.lang}/mypage.html`);
   }
 
   /**
-   * assert the navigated URL is correct
+   * Assert the registered info is shown except for non displayedKeys
    */
-  async assertURL() {
-    const myPageURL = "https://hotel.testplanisphere.dev/ja/mypage.html";
-    const currentURL = await this.page.url();
-
-    // await console.log(currentURL);
-    await expect(currentURL).toBe(myPageURL);
-  }
-
-  /**
-   * Assert the registered info is shown except non displayedKeys
-   */
-  async assertRegisteredInfo(
+  async assertRegisteredInfoVisible(
     signUpInfo: object,
     nonDisplayKeys: any
   ): Promise<void> {
@@ -35,5 +33,12 @@ export class MyPage extends BasicPage {
         console.log(`${value} is displayed`);
       }
     }
+  }
+
+  /**
+   * Click go to icon setting page
+   */
+  async clickOnSetUpICon() {
+    await this.page.click(`#icon-link`);
   }
 }
