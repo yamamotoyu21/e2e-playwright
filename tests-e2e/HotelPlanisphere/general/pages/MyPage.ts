@@ -2,14 +2,9 @@ import { Page, expect } from "@playwright/test";
 import BasicPage from "./BasicPage";
 
 export class MyPage extends BasicPage {
-  url = `${this.origin}/${this.lang}/mypage.html`;
-
-  async getURL(): Promise<string> {
-    return this.url;
-  }
-
   /**
-   * Directly visit May
+   * go to "my page"
+   * @param lang
    */
   async visit() {
     await this.page.goto(`${this.origin}/${this.lang}/mypage.html`);
