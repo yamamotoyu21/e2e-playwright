@@ -14,11 +14,12 @@ export interface SignUpInfo {
   dateOfBirth?: string;
 }
 export class SignUpPage extends BasicPage {
+  url = `${this.origin}/${this.lang}/signup.html`;
   /**
    * visit signup page directory
    */
   async visit(): Promise<void> {
-    await this.page.goto(`${this.origin}/signup.html`);
+    await this.page.goto(this.url);
   }
 
   /**
@@ -72,8 +73,6 @@ export class SignUpPage extends BasicPage {
     //Click submit button
     await this.page.locator('button[type="submit"]').click();
 
-    await this.page.waitForLoadState();
-
-    return new MyPage(this.page, this.origin);
+    return new MyPage(this.page, this.origin, this.lang);
   }
 }

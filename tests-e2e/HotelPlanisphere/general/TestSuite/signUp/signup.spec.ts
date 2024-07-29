@@ -1,13 +1,13 @@
 import { test, expect, Page } from "@playwright/test";
 import { SignUpPage, SignUpInfo } from "../../pages/SignupPage";
 import { MyPage } from "../../pages/MyPage";
-import data from "./data.json";
 import defineConfig from "../../../../../playwright.config";
+import data from "./data.json";
 
 const origin = defineConfig.use.baseURL;
 
 test.describe("Sign Up", () => {
-  test.only("signUp", async ({ page }) => {
+  test.only("sign up", async ({ page }) => {
     const d = data.newUser;
 
     const testData: SignUpInfo = {
@@ -22,16 +22,13 @@ test.describe("Sign Up", () => {
       dateOfBirth: d.dateOfBirth,
     };
 
-    //visit SignUpPage
+    // visit SignUpPage
     const signUpPage = new SignUpPage(page, origin);
     await signUpPage.visit();
-    await page.waitForLoadState();
 
     //Sign up and see if it navigates to myPage
-    await signUpPage.signUp(testData);
-    const myPage = new MyPage(page, origin);
-    // const mypage: MyPage = await signUpPage.signUp(testData);
-    await myPage.assertURL();
+    const myPage = await signUpPage.signUp(testData);
+    await expect(page.url()).toContain(myPage.url);
     //Check if registered info is displayed except for those 'nonDisplayKeys'
     const nonDisplayKeys = new Set([
       "password",
@@ -39,6 +36,6 @@ test.describe("Sign Up", () => {
       "gender",
       "dateOfBirth",
     ]);
-    await myPage.assertRegisteredInfo(testData, nonDisplayKeys);
+    await myPage.assertRegisteredInfoVisible(testData, nonDisplayKeys);
   });
 });
