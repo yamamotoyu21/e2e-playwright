@@ -1,0 +1,15 @@
+{
+    "bookingInfo": {
+        "checkInDate": "31",
+        "term": "2",
+        "headCount": "2",
+        "breakfast": true,
+        "earlyCheckIn": true,
+        "sightseeing": true,
+        "name": "鈴木一郎",
+        "contact": "tel",
+        "email": "moonwalker1121+edkok@gmail.com",
+        "tel": "09021731095",
+        "comment": "初めて伺います。よろしくお願いします"
+    }
+}

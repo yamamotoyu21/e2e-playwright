@@ -1,0 +1,12 @@
+{
+    "newUser": {
+      "email": "moonwalker1121@gmail.com",
+      "password": "password",
+      "name": "John",
+      "rank": "Membership",
+      "address": "Freeway street",
+      "phone": "09021731095",
+      "gender": "2",
+      "dateOfBirth": "1996-11-21"
+    }
+}
